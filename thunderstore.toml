@@ -7,7 +7,7 @@ repository = "https://thunderstore.io"
 [package]
 namespace = "LucydDemon"
 name = "BetterPingDistance"
-description = "Shows the distance to pings above it. A small but useful QoL mod."
+description = "Shows reliably the distance to pings from you and your friends."
 websiteUrl = "https://github.com/lucyd-dev/BetterPingDistance/"
 containsNsfwContent = false
 [package.dependencies]
