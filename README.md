@@ -15,4 +15,4 @@ If you like my mod, I would really appreciate if you leave a like 💜
 
 ## Any Problems?
 
-**If you need help or it doesn't work the right way, feel free to contact me in the [PEAK Modding Discord](https://discord.com/channels/1363179626435707082/1417444600112484453) or create an issue on [GitHub](https://github.com/lucyd-dev/BetterPingDistance/issues).**
+**If you need help or it doesn't work the right way, feel free to contact me in the [PEAK Modding Discord](https://discord.com/channels/1363179626435707082/1420410363907674222) or create an issue on [GitHub](https://github.com/lucyd-dev/BetterPingDistance/issues).**
