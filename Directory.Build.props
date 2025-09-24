@@ -1,0 +1,42 @@
+<Project>
+    <!-- Import our shared user configuration file -->
+    <Import
+        Project="$(SolutionRoot)Config.Build.user.props"
+        Condition="Exists('$(SolutionRoot)Config.Build.user.props')"
+    />
+
+    <!-- Game specific properties -->
+    <PropertyGroup>
+        <GaleProfileName>Dev</GaleProfileName>
+        <Game>PEAK</Game>
+        <UseScriptsFolder Condition="$(UseScriptsFolder) == ''">false</UseScriptsFolder>
+    </PropertyGroup>
+
+
+    <!-- Custom props -->
+    <PropertyGroup>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <UseArtifactsOutput>true</UseArtifactsOutput>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>embedded</DebugType>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <SolutionRoot>$(MSBuildThisFileDirectory)</SolutionRoot>
+        <PathBeforeSteam Condition="'$([MSBuild]::IsOSUnixLike())' == 'true'">$(HOME)\.local\share\</PathBeforeSteam>
+        <PathBeforeSteam Condition="'$([MSBuild]::IsOSUnixLike())' != 'true'">$(MSBuildProgramFiles32)\</PathBeforeSteam>
+        <PluginPath Condition="'$(UseScriptsFolder)' == 'true'">scripts\</PluginPath>
+        <PluginPath Condition="'$(UseScriptsFolder)' != 'true'">plugins\</PluginPath>
+
+        <GameDir Condition="$(GameDir) == ''">$(PathBeforeSteam)\Steam\steamapps\common\$(Game)\</GameDir>
+        <ManagedDir>$(GameDir)\$(Game)_Data\Managed\</ManagedDir>
+        <BepInExDir Condition="$(BepInExDir) == ''">$(AppData)\com.kesomannen.gale\$(Game)\profiles\$(GaleProfileName)\BepInEx\$(PluginPath)</BepInExDir>
+        <StartArguments Condition="$(StartArguments) == ''">--doorstop-enable true --doorstop-target "$(AppData)\com.kesomannen.gale\$(Game)\profiles\$(GaleProfileName)\BepInEx\core\BepInEx.Preloader.dll" --gale-profile "$(GaleProfileName)"</StartArguments>
+    </PropertyGroup>
+
+</Project>

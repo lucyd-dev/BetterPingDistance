@@ -1,0 +1,17 @@
+<Project>
+
+  <PropertyGroup>
+    <!-- Set if u want to deploy the plugin in the scripts folder instead (BepInEx ScriptEngine)-->
+	<UseScriptsFolder>true</UseScriptsFolder>
+
+    <!-- Set if the default steam game install directory doesn't work. -->
+    <!-- <GameDir></GameDir> -->
+
+    <!-- Set if your BepInEx/plugins/ directory isn't in the game files. -->
+    <!-- <BepInExDir></BepInExDir> -->
+
+	<!-- Set if u want other startup arguments than for gale -->
+	<!-- <StartArguments></StartArguments> -->
+  </PropertyGroup>
+
+</Project>

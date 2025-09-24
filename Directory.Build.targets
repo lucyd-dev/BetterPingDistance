@@ -1,0 +1,78 @@
+<!-- Add Package Sources -->
+<Project>
+    <PropertyGroup>
+        <RestoreAdditionalProjectSources>
+            https://api.nuget.org/v3/index.json;
+            https://nuget.bepinex.dev/v3/index.json;
+            https://nuget.windows10ce.com/nuget/v3/index.json
+        </RestoreAdditionalProjectSources>
+    </PropertyGroup>
+
+    <!-- Package References -->
+    <ItemGroup>
+        <PackageReference Include="BepInEx.Core" Version="5.*" ExcludeAssets="runtime" />
+        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+        <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3"
+            PrivateAssets="all" IncludeAssets="build" />
+    </ItemGroup>
+
+    <!-- NuGet fallback stripped game references -->
+    <ItemGroup Condition="!Exists('$(ManagedDir)')">
+        <PackageReference Include="UnityEngine.Modules" Version="6000.0.36" PrivateAssets="all" />
+    </ItemGroup>
+
+    <!-- Local game references -->
+    <ItemGroup Condition="Exists('$(ManagedDir)')">
+        <LocalReferences
+            Include="$(ManagedDir)*.dll"
+            Exclude="$(ManagedDir)Mono*.dll;$(ManagedDir)netstandard.dll;$(ManagedDir)System*.dll;$(ManagedDir)mscorlib.dll"
+        />
+        <Reference Include="@(LocalReferences)" Private="false" />
+        <Reference Include="$(ManagedDir)Assembly-CSharp.dll" Private="false" Publicize="true" />
+    </ItemGroup>
+
+    <!-- Auto-generate plugin info file -->
+    <Target Name="AddGeneratedFile" BeforeTargets="BeforeCompile;CoreCompile"
+        Inputs="$(MSBuildAllProjects)" Outputs="$(IntermediateOutputPath)GeneratedFile.cs">
+        <PropertyGroup>
+            <GeneratedText><![CDATA[
+namespace $(RootNamespace)%3B
+internal static class MyPluginInfo {
+    public const string PLUGIN_GUID = "$(AssemblyName)"%3B
+    public const string PLUGIN_NAME = "$(Product)"%3B
+    public const string PLUGIN_VERSION = "$(Version)"%3B
+    public const string PLUGIN_AUTHOR = "$(Authors)"%3B
+}
+			]]></GeneratedText>
+            <GeneratedFilePath>$(IntermediateOutputPath)MyPluginInfo.cs</GeneratedFilePath>
+        </PropertyGroup>
+        <ItemGroup>
+            <Compile Include="$(GeneratedFilePath)" />
+            <FileWrites Include="$(GeneratedFilePath)" />
+        </ItemGroup>
+        <WriteLinesToFile Lines="$(GeneratedText)" File="$(GeneratedFilePath)"
+            WriteOnlyWhenDifferent="true" Overwrite="true" />
+    </Target>
+
+    <!-- Deploy files to dev plugin directory -->
+    <Target Name="DeployFiles" AfterTargets="Build">
+        <Message Text="Deploy to $(PluginPath) → $(BepInExDir)$(AssemblyName).dll" Importance="High" />
+        <Error Text="Plugins directory '$(BepInExDir)' doesn't exist!"
+            Condition="!Exists('$(BepInExDir)')" />
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(BepInExDir)" />
+    </Target>
+
+    <!-- Remove git files for thunderstore packaging -->
+    <ItemGroup>
+        <None Update=".gitattributes" CopyToPluginOutputDirectory="Never" />
+        <None Update=".gitignore" CopyToPluginOutputDirectory="Never" />
+    </ItemGroup>
+
+    <Target Name="PublishThunderstore" AfterTargets="PostBuildEvent"
+        Condition="$(Configuration) == 'Release'">
+        <Exec
+            Command="dotnet tcli build --config-path &quot;$(ProjectDir)thunderstore.toml&quot; --package-version $(Version)" />
+        <Exec
+            Command="dotnet tcli publish --config-path &quot;$(ProjectDir)thunderstore.toml&quot; --file &quot;$(ProjectDir)../Packages/$(Authors)-$(Product)-$(Version).zip&quot;" />
+    </Target>
+</Project>
