@@ -9,15 +9,21 @@ public class PingDistance : MonoBehaviour
     public Color color = Color.white;
     private TextMeshProUGUI? TMP;
 
+    void Start()
+    {
+        TMP = GetComponentInChildren<TextMeshProUGUI>();
+    }
+
     void LateUpdate()
     {
-        if (Camera.main == null) return;
+        if (Camera.main == null || TMP == null) return;
 
         float distance = Mathf.Round(Vector3.Distance(position, Camera.main.transform.position));
+        float scale = Mathf.Clamp(2 / (distance / 10f), 0.5f, 1.5f);
         float angle = Vector3.Angle(Camera.main.transform.forward, position - Camera.main.transform.position);
-        if (TMP == null) TMP = GetComponentInChildren<TextMeshProUGUI>();
 
         transform.position = Camera.main.WorldToScreenPoint(position);
+        transform.localScale = new Vector3(scale, scale, scale);
 
         TMP.color = color;
         TMP.text = $"{distance}m";
