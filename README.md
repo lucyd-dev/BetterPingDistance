@@ -1,8 +1,8 @@
 # Better Ping Distance
 
 [![GitHub](https://img.shields.io/badge/GitHub-BetterPingDistance-brightgreen?style=for-the-badge&logo=GitHub)](https://github.com/lucyd-dev/BetterPingDistance/)
-[![Thunderstore Version](https://img.shields.io/thunderstore/v/LucydDemon/BetterPingDistance?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/repo/p/LucydDemon/BetterPingDistance/)
-[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/LucydDemon/BetterPingDistance?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/repo/p/LucydDemon/BetterPingDistance/)
+[![Thunderstore Version](https://img.shields.io/thunderstore/v/LucydDemon/BetterPingDistance?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/peak/p/LucydDemon/BetterPingDistance/)
+[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/LucydDemon/BetterPingDistance?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/peak/p/LucydDemon/BetterPingDistance/)
 
 A better and fixed version of PingDistance.
 Nothing to explain here, just shows the distance from you to a ping.
